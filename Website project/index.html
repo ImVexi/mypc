@@ -1,634 +1,219 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>pc.vextroboomin.xyz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <title>The Purple Machine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #f5f4f2;
-      --bg2:       #eeede9;
-      --surface:   #ffffff;
-      --border:    #e0ddd8;
-      --text:      #1a1917;
-      --muted:     #7a7875;
-      --accent:    #2a2a28;
-      --tag-bg:    #e8e6e1;
-      --tag-text:  #4a4845;
-      --nav-h:     64px;
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --border: #e5e5e5;
+      --text: #171717;
+      --muted: #737373;
+      --accent: #7c3aed;
+      --accent-light: #ede9fe;
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'DM Mono', monospace;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
+      font-size: 15px; 
+      line-height: 1.6;
       min-height: 100vh;
-      overflow-x: hidden;
+      padding: 40px 24px;
     }
 
-    /* ── NAV ─────────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: var(--nav-h);
-      background: rgba(245,244,242,0.88);
-      backdrop-filter: blur(14px);
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center;
-      padding: 0 40px;
+    }
+
+    header h1 { font-size: 22px; font-weight: 600; }
+    header span { color: var(--muted); font-size: 14px; }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
       gap: 32px;
     }
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800; font-size: 15px;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
-      margin-right: auto;
-      white-space: nowrap;
-    }
-    .nav-logo span { color: var(--muted); font-weight: 400; }
-    .nav-links {
-      display: flex; gap: 6px; flex-wrap: wrap;
-    }
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 5px 11px;
-      border-radius: 20px;
-      border: 1px solid transparent;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-    .nav-links a:hover {
-      color: var(--text);
-      border-color: var(--border);
-      background: var(--surface);
-    }
-    .hamburger {
-      display: none;
-      flex-direction: column; gap: 5px;
-      cursor: pointer; padding: 4px;
-    }
-    .hamburger span {
-      width: 22px; height: 1.5px;
-      background: var(--text); border-radius: 2px;
-      transition: all 0.3s;
-    }
-    .mobile-menu {
-      display: none;
-      position: fixed; top: var(--nav-h); left: 0; right: 0;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
-      flex-direction: column; gap: 4px;
-      z-index: 99;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px; color: var(--muted);
-      text-decoration: none; padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .mobile-menu a:last-child { border-bottom: none; }
 
-    /* ── HERO ────────────────────────────────────────── */
-    #hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      justify-content: flex-end;
-      padding: calc(var(--nav-h) + 60px) 60px 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg-grid {
-      position: absolute; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.55;
-    }
-    .hero-bg-fade {
-      position: absolute; inset: 0; z-index: 1;
-      background: radial-gradient(ellipse 70% 60% at 20% 80%, rgba(245,244,242,0) 0%, var(--bg) 75%);
-    }
-    .hero-content { position: relative; z-index: 2; }
-    .hero-tag {
-      display: inline-block;
-      font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 5px 12px; border-radius: 20px;
-      margin-bottom: 28px;
-      background: var(--surface);
-    }
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(52px, 8vw, 110px);
-      font-weight: 800;
-      line-height: 0.92;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      margin-bottom: 32px;
-    }
-    .hero-title em { color: var(--muted); font-style: normal; }
-    .hero-sub {
-      font-size: 13px; color: var(--muted);
-      line-height: 1.7; max-width: 380px;
-      margin-bottom: 48px;
-    }
-    .hero-stats {
-      display: flex; gap: 40px; flex-wrap: wrap;
-    }
-    .hero-stat label {
-      display: block; font-size: 10px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 4px;
-    }
-    .hero-stat span {
-      font-family: 'Syne', sans-serif;
-      font-size: 22px; font-weight: 700;
-      color: var(--text);
-    }
-
-    /* ── SECTION SHELLS ──────────────────────────────── */
-    section { padding: 100px 60px; }
-    .section-label {
-      font-size: 10px; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 48px;
-      display: flex; align-items: center; gap: 14px;
-    }
-    .section-label::before {
-      content: ''; display: block;
-      width: 32px; height: 1px; background: var(--muted);
-    }
-
-    /* ── SPECS GRID ──────────────────────────────────── */
-    #specs { background: var(--bg); }
-    .specs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .spec-card {
-      background: var(--surface);
-      padding: 32px 28px;
-      display: flex; flex-direction: column;
-      gap: 12px;
-      transition: background 0.2s;
-      cursor: default;
-      position: relative;
-    }
-    .spec-card:hover { background: #fafaf8; }
-    .spec-card::after {
-      content: '';
-      position: absolute; bottom: 0; left: 28px; right: 28px;
-      height: 1px; background: var(--border);
-    }
-    .spec-cat {
-      font-size: 9px; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--muted);
-    }
-    .spec-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 17px; font-weight: 700;
-      line-height: 1.2; color: var(--text);
-    }
-    .spec-detail { font-size: 11px; color: var(--muted); line-height: 1.6; }
-    .spec-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-    .spec-tag {
-      font-size: 10px; padding: 3px 9px;
-      background: var(--tag-bg); color: var(--tag-text);
-      border-radius: 20px; font-weight: 500;
-    }
-    .spec-index {
-      position: absolute; top: 20px; right: 24px;
-      font-size: 11px; color: var(--border);
-      font-family: 'Syne', sans-serif; font-weight: 700;
-    }
-
-    /* ── GALLERY ─────────────────────────────────────── */
-    #gallery { background: var(--bg2); }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: 260px 260px;
-      gap: 12px;
-    }
-    .gallery-slot {
+    .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 10px;
+      padding: 24px;
+      height: fit-content;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .spec-row {
+      display: grid;
+      grid-template-columns: 110px 1fr auto;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-category { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
+    .spec-name { font-weight: 500; font-size: 15px; }
+    .spec-highlight { font-size: 12px; color: var(--accent); background: var(--accent-light); padding: 4px 10px; border-radius: 6px; font-weight: 500; }
+
+    /* Gallery Fixes */
+    .gallery-main {
+      width: 100%;
+      aspect-ratio: 16/10;
+      border-radius: 8px;
       overflow: hidden;
-      position: relative;
-      transition: border-color 0.2s;
+      margin-bottom: 12px;
+      background: #eee;
+      cursor: zoom-in;
     }
-    .gallery-slot:hover { border-color: #c0bdb8; }
-    .gallery-slot.large { grid-column: span 2; }
-    .gallery-slot img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
+
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+
+    .gallery-thumbs { 
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px; 
     }
-    .gallery-slot.empty .icon {
-      font-size: 28px; opacity: 0.25;
+    
+    .gallery-thumb {
+      aspect-ratio: 4/3;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+      background: #eee;
     }
-    .gallery-slot.empty p {
-      font-size: 11px; color: var(--muted);
-      text-align: center; line-height: 1.5;
-    }
-    .gallery-slot.empty input[type="file"] {
-      position: absolute; inset: 0;
-      opacity: 0; cursor: pointer;
-      width: 100%; height: 100%;
-    }
-    .gallery-slot .overlay-label {
-      position: absolute; bottom: 14px; left: 14px;
-      font-size: 10px; letter-spacing: 0.08em;
-      text-transform: uppercase; color: white;
-      background: rgba(26,25,23,0.55);
-      padding: 4px 10px; border-radius: 20px;
-      backdrop-filter: blur(6px);
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-thumb.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-light); }
+
+    /* Lightbox */
+    #lightbox {
       display: none;
-    }
-    .gallery-slot:has(img) .overlay-label { display: block; }
-
-    /* ── ABOUT ───────────────────────────────────────── */
-    #about {
-      background: var(--text);
-      color: white;
-    }
-    #about .section-label { color: #5a5956; }
-    #about .section-label::before { background: #5a5956; }
-    .about-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-      align-items: start;
-    }
-    .about-heading {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(32px, 4vw, 54px);
-      font-weight: 800; line-height: 1.05;
-      letter-spacing: -0.02em;
-    }
-    .about-heading em { color: #5a5956; font-style: normal; }
-    .about-body { font-size: 13px; line-height: 1.8; color: #a8a5a1; }
-    .about-body p + p { margin-top: 16px; }
-    .about-pills {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px;
-    }
-    .about-pill {
-      font-size: 11px; padding: 6px 14px;
-      border: 1px solid #3a3937;
-      border-radius: 20px; color: #a8a5a1;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+      padding: 20px;
     }
 
-    /* ── FOOTER ──────────────────────────────────────── */
-    footer {
-      padding: 40px 60px;
-      border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 11px; color: var(--muted);
-      flex-wrap: wrap; gap: 12px;
+    #lightbox img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+      border-radius: 4px;
     }
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--text); }
 
-    /* ── SCROLL REVEAL ───────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(28px);
-      transition: opacity 0.65s cubic-bezier(.25,.8,.25,1),
-                  transform 0.65s cubic-bezier(.25,.8,.25,1);
-    }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    .reveal-delay-5 { transition-delay: 0.5s; }
+    .sidebar > .card + .card { margin-top: 20px; }
+    .about-text { color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .tag { font-size: 11px; padding: 4px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); margin-right: 6px; font-weight: 500; }
 
-    /* ── RESPONSIVE ──────────────────────────────────── */
-    @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      section { padding: 64px 24px; }
-      #hero { padding: calc(var(--nav-h) + 40px) 24px 60px; }
-      .hero-stats { gap: 24px; }
-      .gallery-grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-      }
-      .gallery-slot.large { grid-column: span 2; }
-      .about-inner { grid-template-columns: 1fr; gap: 40px; }
-      footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
+    @media (max-width: 900px) { 
+      .main-grid { grid-template-columns: 1fr; }
+      body { padding: 20px; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#hero">pc<span>.vextroboomin.xyz</span></a>
-  <div class="nav-links">
-    <a href="#specs">Specs</a>
-    <a href="#cpu">CPU</a>
-    <a href="#gpu">GPU</a>
-    <a href="#ram">RAM</a>
-    <a href="#storage">Storage</a>
-    <a href="#cooling">Cooling</a>
-    <a href="#case">Case</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#about">About</a>
+  <div id="lightbox" onclick="this.style.display='none'">
+    <img id="lightboxImg" src="" alt="Fullscreen view" />
   </div>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#specs" onclick="toggleMenu()">All Specs</a>
-  <a href="#cpu" onclick="toggleMenu()">CPU — Core i5-13600KF</a>
-  <a href="#gpu" onclick="toggleMenu()">GPU — Radeon 9070 XT</a>
-  <a href="#ram" onclick="toggleMenu()">RAM — Trident Z DDR4</a>
-  <a href="#storage" onclick="toggleMenu()">Storage</a>
-  <a href="#cooling" onclick="toggleMenu()">Cooling — LS720 SE</a>
-  <a href="#case" onclick="toggleMenu()">Case — Phanteks NV5</a>
-  <a href="#gallery" onclick="toggleMenu()">Gallery</a>
-  <a href="#about" onclick="toggleMenu()">About</a>
-</div>
+  <div class="container">
+    <header>
+      <h1>The Purple Machine</h1>
+      <span>Custom Build - 2026</span>
+    </header>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-bg-fade"></div>
-  <div class="hero-content">
-    <div class="hero-tag reveal">Custom PC Build · 2024–2025</div>
-    <h1 class="hero-title reveal reveal-delay-1">
-      VEXTRO<br><em>BOOMIN</em>
-    </h1>
-    <p class="hero-sub reveal reveal-delay-2">
-      A meticulously specced mid-range powerhouse built for gaming, creation, and everyday dominance. Clean. Quiet. Fast.
-    </p>
-    <div class="hero-stats reveal reveal-delay-3">
-      <div class="hero-stat">
-        <label>CPU</label>
-        <span>i5-13600KF</span>
+    <div class="main-grid">
+      <div class="card">
+        <div class="card-title">Technical Specifications</div>
+        <div class="specs-list">
+          <div class="spec-row"><span class="spec-category">CPU</span><span class="spec-name">Intel Core i5-13600KF</span><span class="spec-highlight">14C / 20T</span></div>
+          <div class="spec-row"><span class="spec-category">GPU</span><span class="spec-name">XFX Quicksilver RX 9070 XT</span><span class="spec-highlight">16 GB</span></div>
+          <div class="spec-row"><span class="spec-category">RAM</span><span class="spec-name">G.Skill Trident Z RGB DDR4-4000</span><span class="spec-highlight">32 GB</span></div>
+          <div class="spec-row"><span class="spec-category">Board</span><span class="spec-name">ASUS TUF Gaming Z790-Plus WiFi</span><span class="spec-highlight">DDR4</span></div>
+          <div class="spec-row"><span class="spec-category">Storage</span><span class="spec-name">Corsair MP600 + SK Hynix P31</span><span class="spec-highlight">3.5 TB</span></div>
+          <div class="spec-row"><span class="spec-category">Cooling</span><span class="spec-name">DeepCool LS720 SE</span><span class="spec-highlight">360mm</span></div>
+          <div class="spec-row"><span class="spec-category">PSU</span><span class="spec-name">be quiet! Pure Power 13 M</span><span class="spec-highlight">850W</span></div>
+          <div class="spec-row"><span class="spec-category">Case</span><span class="spec-name">Phanteks NV5</span><span class="spec-highlight">Mid-Tower</span></div>
+        </div>
       </div>
-      <div class="hero-stat">
-        <label>GPU</label>
-        <span>9070 XT</span>
-      </div>
-      <div class="hero-stat">
-        <label>RAM</label>
-        <span>32 GB</span>
-      </div>
-      <div class="hero-stat">
-        <label>Storage</label>
-        <span>4 TB</span>
+
+      <div class="sidebar">
+        <div class="card">
+          <div class="card-title">Gallery</div>
+          <div class="gallery-main" onclick="openFullscreen()">
+            <img id="mainImage" src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.dc13a53aea1c07fb05838e2f8d74a4e8.1600.jpg" alt="Build" />
+          </div>
+          <div class="gallery-thumbs">
+            <div class="gallery-thumb active" onclick="setImage(this, 0)"><img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.dc13a53aea1c07fb05838e2f8d74a4e8.512.jpg" /></div>
+            <div class="gallery-thumb" onclick="setImage(this, 1)"><img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.64639cc0e3d93f1034fe9934343cb996.512.jpg" /></div>
+            <div class="gallery-thumb" onclick="setImage(this, 2)"><img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.65d7069e127187eb75e479fe318d3d64.512.jpg" /></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">About This Build</div>
+          <p class="about-text">Mid-range build pairing Raptor Lake with RDNA 4. Upgraded incrementally for best value over time.</p>
+          <div class="tags"><span class="tag">Gaming</span><span class="tag">Productivity</span></div>
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- SPECS -->
-<section id="specs">
-  <div class="section-label reveal">All Components</div>
+  <script>
+    const images = [
+      'https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.dc13a53aea1c07fb05838e2f8d74a4e8.1600.jpg',
+      'https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.64639cc0e3d93f1034fe9934343cb996.1600.jpg',
+      'https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.65d7069e127187eb75e479fe318d3d64.1600.jpg'
+    ];
 
-  <div class="specs-grid">
+    function setImage(thumb, idx) {
+      document.getElementById('mainImage').src = images[idx];
+      document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+    }
 
-    <!-- CPU -->
-    <div class="spec-card reveal" id="cpu">
-      <div class="spec-index">01</div>
-      <div class="spec-cat">Processor</div>
-      <div class="spec-name">Intel Core i5-13600KF</div>
-      <div class="spec-detail">14 cores (6P + 8E) · 20 threads · 3.5 GHz base / 5.1 GHz boost · 125W TDP · LGA1700</div>
-      <div class="spec-tags">
-        <span class="spec-tag">Raptor Lake</span>
-        <span class="spec-tag">Unlocked</span>
-        <span class="spec-tag">No iGPU</span>
-      </div>
-    </div>
+    function openFullscreen() {
+      const mainImgSrc = document.getElementById('mainImage').src;
+      document.getElementById('lightboxImg').src = mainImgSrc;
+      document.getElementById('lightbox').style.display = 'flex';
+    }
 
-    <!-- GPU -->
-    <div class="spec-card reveal reveal-delay-1" id="gpu">
-      <div class="spec-index">02</div>
-      <div class="spec-cat">Graphics Card</div>
-      <div class="spec-name">AMD Radeon RX 9070 XT</div>
-      <div class="spec-detail">RDNA 4 architecture · 16 GB GDDR6 · PCIe 5.0 · DirectX 12 Ultimate · FSR 4 support</div>
-      <div class="spec-tags">
-        <span class="spec-tag">RDNA 4</span>
-        <span class="spec-tag">Ray Tracing</span>
-        <span class="spec-tag">16 GB VRAM</span>
-      </div>
-    </div>
-
-    <!-- RAM -->
-    <div class="spec-card reveal reveal-delay-2" id="ram">
-      <div class="spec-index">03</div>
-      <div class="spec-cat">Memory</div>
-      <div class="spec-name">G.Skill Trident Z DDR4</div>
-      <div class="spec-detail">32 GB (2×16 GB) · 4000 MT/s · XMP 3.0 · Dual channel · Low-profile RGB heatspreader</div>
-      <div class="spec-tags">
-        <span class="spec-tag">DDR4-4000</span>
-        <span class="spec-tag">XMP</span>
-        <span class="spec-tag">Dual Channel</span>
-      </div>
-    </div>
-
-    <!-- STORAGE 1 -->
-    <div class="spec-card reveal reveal-delay-3" id="storage">
-      <div class="spec-index">04</div>
-      <div class="spec-cat">Primary NVMe SSD</div>
-      <div class="spec-name">Corsair MP600 Micro 2 TB</div>
-      <div class="spec-detail">PCIe 4.0 Gen4 · Up to 5,000 MB/s read · M.2 2242 form factor · TLC NAND</div>
-      <div class="spec-tags">
-        <span class="spec-tag">Gen4 NVMe</span>
-        <span class="spec-tag">2 TB</span>
-        <span class="spec-tag">M.2 2242</span>
-      </div>
-    </div>
-
-    <!-- STORAGE 2 -->
-    <div class="spec-card reveal reveal-delay-4">
-      <div class="spec-index">05</div>
-      <div class="spec-cat">Secondary NVMe SSD</div>
-      <div class="spec-name">SK Hynix Gold P31 1 TB</div>
-      <div class="spec-detail">PCIe 3.0 NVMe · Up to 3,500 MB/s read · M.2 2280 · 128-layer 128L TLC</div>
-      <div class="spec-tags">
-        <span class="spec-tag">Gen3 NVMe</span>
-        <span class="spec-tag">1 TB</span>
-        <span class="spec-tag">Low Power</span>
-      </div>
-    </div>
-
-    <!-- STORAGE 3 -->
-    <div class="spec-card reveal reveal-delay-5">
-      <div class="spec-index">06</div>
-      <div class="spec-cat">Tertiary NVMe SSD</div>
-      <div class="spec-name">Silicon Power A60 1 TB</div>
-      <div class="spec-detail">PCIe 3.0 NVMe · Up to 2,200 MB/s read · M.2 2280 · SLC caching</div>
-      <div class="spec-tags">
-        <span class="spec-tag">Gen3 NVMe</span>
-        <span class="spec-tag">1 TB</span>
-        <span class="spec-tag">SLC Cache</span>
-      </div>
-    </div>
-
-    <!-- MOTHERBOARD -->
-    <div class="spec-card reveal" id="mobo">
-      <div class="spec-index">07</div>
-      <div class="spec-cat">Motherboard</div>
-      <div class="spec-name">ASUS TUF Gaming Z790-Plus D4 WiFi</div>
-      <div class="spec-detail">LGA1700 socket · ATX · DDR4 · PCIe 5.0 x16 · Wi-Fi 6E · 2.5G LAN · USB4 Type-C</div>
-      <div class="spec-tags">
-        <span class="spec-tag">Z790</span>
-        <span class="spec-tag">WiFi 6E</span>
-        <span class="spec-tag">PCIe 5.0</span>
-      </div>
-    </div>
-
-    <!-- COOLER -->
-    <div class="spec-card reveal reveal-delay-1" id="cooling">
-      <div class="spec-index">08</div>
-      <div class="spec-cat">CPU Cooler</div>
-      <div class="spec-name">DeepCool LS720 SE</div>
-      <div class="spec-detail">360 mm AIO liquid cooler · 3× 120 mm fans · ARGB pump head · LGA1700 compatible</div>
-      <div class="spec-tags">
-        <span class="spec-tag">360 mm AIO</span>
-        <span class="spec-tag">ARGB</span>
-        <span class="spec-tag">3× 120 mm</span>
-      </div>
-    </div>
-
-    <!-- PSU -->
-    <div class="spec-card reveal reveal-delay-2" id="psu">
-      <div class="spec-index">09</div>
-      <div class="spec-cat">Power Supply</div>
-      <div class="spec-name">be quiet! Pure Power 13M</div>
-      <div class="spec-detail">Modular · 80 PLUS Gold · ATX 3.0 · PCIe 5.0 12VHPWR connector · Silent Wings fan</div>
-      <div class="spec-tags">
-        <span class="spec-tag">80+ Gold</span>
-        <span class="spec-tag">Modular</span>
-        <span class="spec-tag">ATX 3.0</span>
-      </div>
-    </div>
-
-    <!-- CASE -->
-    <div class="spec-card reveal reveal-delay-3" id="case">
-      <div class="spec-index">10</div>
-      <div class="spec-cat">Case</div>
-      <div class="spec-name">Phanteks NV5</div>
-      <div class="spec-detail">Mid-tower ATX · Dual-chamber layout · Glass front panel · Supports E-ATX · 360 mm radiator support</div>
-      <div class="spec-tags">
-        <span class="spec-tag">Mid-Tower</span>
-        <span class="spec-tag">Mesh Front</span>
-        <span class="spec-tag">Dual Chamber</span>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-label reveal">The Build</div>
-  <div class="about-inner">
-    <div>
-      <h2 class="about-heading reveal">
-        Built for<br><em>everything.</em>
-      </h2>
-      <div class="about-pills reveal reveal-delay-2">
-        <span class="about-pill">Gaming</span>
-        <span class="about-pill">Content Creation</span>
-        <span class="about-pill">Daily Driver</span>
-        <span class="about-pill">Future-Proofed</span>
-      </div>
-    </div>
-    <div class="about-body reveal reveal-delay-1">
-      <p>
-        This rig pairs Intel's Raptor Lake i5-13600KF — a 14-core hybrid powerhouse — with AMD's brand-new RDNA 4 flagship, the Radeon RX 9070 XT. The result is a system that punches well above its class in both rasterization and ray tracing workloads.
-      </p>
-      <p>
-        Fast DDR4 at 4000 MT/s keeps latency in check while the 360mm DeepCool AIO ensures the chip never throttles. Three NVMe drives totaling 4 TB give ample room for games, projects, and archives.
-      </p>
-      <p>
-        It all lives inside the Phanteks NV5 — a dual-chamber airflow case that keeps things clean, cool, and quiet, powered by be quiet!'s Gold-rated Pure Power 13M.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <span>pc.vextroboomin.xyz</span>
-  <span>i5-13600KF · RX 9070 XT · 32 GB DDR4 · 4 TB NVMe</span>
-</footer>
-
-<script>
-  /* Hamburger */
-  function toggleMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
-  }
-
-  /* Scroll reveal */
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') document.getElementById('lightbox').style.display = 'none';
     });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => io.observe(el));
-
-  /* Gallery image upload */
-  function loadImage(event, slotId, label) {
-    const slot = document.getElementById(slotId);
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      slot.innerHTML = `
-        <img src="${e.target.result}" alt="${label}"/>
-        <span class="overlay-label">${label}</span>
-        <input type="file" accept="image/*" onchange="loadImage(event, '${slotId}', '${label}')"/>
-      `;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  /* Active nav highlight on scroll */
-  const sections = document.querySelectorAll('section[id], div[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 80) current = s.id;
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
-    });
-  }, { passive: true });
-</script>
+  </script>
 </body>
 </html>
