@@ -546,117 +546,13 @@
   </div>
 </section>
 
-<!-- GALLERY
-<section id="gallery">
-  <div class="section-label reveal">Build Gallery</div>
-  <div class="gallery-grid reveal">
-
-    <div class="gallery-slot large" id="slot0">
-      <div class="icon">🖼</div>
-      <p>Drop your hero shot here<br><small>click to upload</small></p>
-      <input type="file" accept="image/*" onchange="loadImage(event, 'slot0', 'Full Build')"/>
-      <span class="overlay-label">Full Build</span>
-    </div>
-
-    <div class="gallery-slot" id="slot1">
-      <div class="icon">🖼</div>
-      <p>Side panel view<br><small>click to upload</small></p>
-      <input type="file" accept="image/*" onchange="loadImage(event, 'slot1', 'Side Panel')"/>
-      <span class="overlay-label">Side Panel</span>
-    </div>
-
-    <div class="gallery-slot" id="slot2">
-      <div class="icon">🖼</div>
-      <p>GPU close-up<br><small>click to upload</small></p>
-      <input type="file" accept="image/*" onchange="loadImage(event, 'slot2', 'GPU')"/>
-      <span class="overlay-label">GPU</span>
-    </div>
-
-    <div class="gallery-slot" id="slot3">
-      <div class="icon">🖼</div>
-      <p>AIO radiator<br><small>click to upload</small></p>
-      <input type="file" accept="image/*" onchange="loadImage(event, 'slot3', 'Cooling')"/>
-      <span class="overlay-label">Cooling</span>
-    </div>
-
-    <div class="gallery-slot large" id="slot4">
-      <div class="icon">🖼</div>
-      <p>Cable management / interior<br><small>click to upload</small></p>
-      <input type="file" accept="image/*" onchange="loadImage(event, 'slot4', 'Interior')"/>
-      <span class="overlay-label">Interior</span>
-    </div>
-
-  </div>
-</section> -->
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-label reveal">The Build</div>
-  <div class="about-inner">
-    <div>
-      <h2 class="about-heading reveal">
-        Built for<br><em>everything.</em>
-      </h2>
-      <div class="about-pills reveal reveal-delay-2">
-        <span class="about-pill">Gaming</span>
-        <span class="about-pill">Content Creation</span>
-        <span class="about-pill">Daily Driver</span>
-        <span class="about-pill">Future-Proofed</span>
-      </div>
-    </div>
-    <div class="about-body reveal reveal-delay-1">
-      <p>
-        This rig pairs Intel's Raptor Lake i5-13600KF — a 14-core hybrid powerhouse — with AMD's brand-new RDNA 4 flagship, the Radeon RX 9070 XT. The result is a system that punches well above its class in both rasterization and ray tracing workloads.
-      </p>
-      <p>
-        Fast DDR4 at 4000 MT/s keeps latency in check while the 360mm DeepCool AIO ensures the chip never throttles. Three NVMe drives totaling 4 TB give ample room for games, projects, and archives.
-      </p>
-      <p>
-        It all lives inside the Phanteks NV5 — a dual-chamber airflow case that keeps things clean, cool, and quiet, powered by be quiet!'s Gold-rated Pure Power 13M.
-      </p>
-    </div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer>
   <span>pc.vextroboomin.xyz</span>
   <span>i5-13600KF · RX 9070 XT · 32 GB DDR4 · 4 TB NVMe</span>
 </footer>
 
-<script>
-  /* Hamburger */
-  function toggleMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
-  }
 
-  /* Scroll reveal */
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => io.observe(el));
-
-  /* Gallery image upload */
-  function loadImage(event, slotId, label) {
-    const slot = document.getElementById(slotId);
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      slot.innerHTML = `
-        <img src="${e.target.result}" alt="${label}"/>
-        <span class="overlay-label">${label}</span>
-        <input type="file" accept="image/*" onchange="loadImage(event, '${slotId}', '${label}')"/>
-      `;
-    };
-    reader.readAsDataURL(file);
-  }
 
   /* Active nav highlight on scroll */
   const sections = document.querySelectorAll('section[id], div[id]');
@@ -673,3 +569,4 @@
 </script>
 </body>
 </html>
+hi
