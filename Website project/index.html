@@ -1,13 +1,4 @@
-export default {
-  async fetch(request: Request): Promise<Response> {
-    return new Response(getHTML(), {
-      headers: { 'Content-Type': 'text/html;charset=UTF-8' },
-    });
-  },
-};
-
-function getHTML(): string {
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -312,5 +303,4 @@ function getHTML(): string {
     }
   </script>
 </body>
-</html>`;
-}
+</html>
