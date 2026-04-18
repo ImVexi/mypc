@@ -555,7 +555,7 @@
             <span class="tag">Gaming</span>
             <span class="tag">Productivity</span>
           </div>
-          <a class="site-link" href="https://me.vextroboomin.xyz/" data-confirm-external="me.vextroboomin.xyz" target="_blank" rel="noopener noreferrer">visit my about me site</a>
+          <a class="site-link" href="https://me.vextroboomin.xyz/" data-confirm-external="me.vextroboomin.xyz">visit my about me site</a>
         </div>
       </div>
     </div>
@@ -593,7 +593,6 @@
     const redirectCancel = document.getElementById('redirectCancel');
     const redirectConfirm = document.getElementById('redirectConfirm');
     let pendingRedirectUrl = null;
-    let pendingRedirectTarget = '_self';
 
     function applyTheme(theme) {
       if (theme === 'auto') {
@@ -621,7 +620,6 @@
 
     function openRedirectModal(url, destination, target) {
       pendingRedirectUrl = url;
-      pendingRedirectTarget = target || '_self';
       redirectDestination.textContent = destination;
       redirectModal.classList.add('open');
       redirectModal.setAttribute('aria-hidden', 'false');
@@ -645,7 +643,7 @@
     redirectCancel.addEventListener('click', closeRedirectModal);
     redirectConfirm.addEventListener('click', () => {
       if (!pendingRedirectUrl) return;
-      window.open(pendingRedirectUrl, pendingRedirectTarget, 'noopener');
+      window.location.href = pendingRedirectUrl;
       closeRedirectModal();
     });
 
