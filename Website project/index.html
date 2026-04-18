@@ -209,12 +209,27 @@
       overflow: hidden;
       margin-bottom: 8px;
       background: var(--gallery-bg);
+      cursor: zoom-in;
+      position: relative;
     }
 
     .gallery-main img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.22s ease, filter 0.22s ease;
+    }
+
+    .gallery-main:hover img {
+      transform: scale(1.02);
+      filter: saturate(1.05);
+    }
+
+    .gallery-hint {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      text-align: right;
     }
 
     .gallery-thumbs {
@@ -242,6 +257,70 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(10, 10, 15, 0.78);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 1000;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-panel {
+      position: relative;
+      width: min(100%, 1100px);
+      max-height: 90vh;
+      transform: scale(0.96);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.22s ease;
+    }
+
+    .lightbox.open .lightbox-panel {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .lightbox-image {
+      display: block;
+      width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      background: rgba(12, 12, 18, 0.92);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font: inherit;
+      color: white;
+      background: rgba(10, 10, 15, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(10, 10, 15, 0.82);
+      transform: translateY(-1px);
     }
 
     .sidebar > .card + .card {
@@ -343,9 +422,10 @@
       <div class="sidebar">
         <div class="card">
           <div class="card-title">Gallery</div>
-          <div class="gallery-main">
+          <div class="gallery-main" id="galleryMain" role="button" tabindex="0" aria-label="Open enlarged gallery image">
             <img id="mainImage" src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.dc13a53aea1c07fb05838e2f8d74a4e8.1600.jpg" alt="Build" />
           </div>
+          <div class="gallery-hint">tap image to enlarge</div>
           <div class="gallery-thumbs">
             <div class="gallery-thumb active" onclick="setImage(this, 0)">
               <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.dc13a53aea1c07fb05838e2f8d74a4e8.512.jpg" alt="1" />
@@ -373,10 +453,22 @@
     </div>
   </div>
 
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-panel">
+      <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close enlarged image">Close</button>
+      <img class="lightbox-image" id="lightboxImage" src="" alt="Enlarged PC build view" />
+    </div>
+  </div>
+
   <script>
     const root = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const galleryMain = document.getElementById('galleryMain');
+    const mainImage = document.getElementById('mainImage');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxClose = document.getElementById('lightboxClose');
 
     function applyTheme(theme) {
       if (theme === 'auto') {
@@ -413,11 +505,46 @@
       'https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.64639cc0e3d93f1034fe9934343cb996.1600.jpg',
       'https://cdna.pcpartpicker.com/static/forever/images/userbuild/463506.65d7069e127187eb75e479fe318d3d64.1600.jpg'
     ];
+
+    function openLightbox(src) {
+      lightboxImage.src = src || mainImage.src;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
     function setImage(thumb, idx) {
-      document.getElementById('mainImage').src = images[idx];
+      mainImage.src = images[idx];
       document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
       thumb.classList.add('active');
     }
+
+    galleryMain.addEventListener('click', () => openLightbox(mainImage.src));
+    galleryMain.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openLightbox(mainImage.src);
+      }
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightbox.classList.contains('open')) {
+        closeLightbox();
+      }
+    });
   </script>
 </body>
 </html>
