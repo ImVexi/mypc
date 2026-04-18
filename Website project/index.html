@@ -349,22 +349,27 @@
     }
 
     .site-link {
-      display: inline-block;
+      display: block;
+      width: 100%;
       margin-top: 12px;
       font-size: 12px;
+      font-weight: 600;
+      text-align: center;
       color: var(--text);
       text-decoration: none;
       border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 8px 12px;
-      background: var(--surface);
-      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: linear-gradient(180deg, var(--surface-raised), var(--surface));
+      box-shadow: var(--shadow);
+      transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
     }
 
     .site-link:hover {
       background: var(--surface-raised);
       border-color: var(--accent);
       transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(124, 58, 237, 0.18);
     }
 
     @media (max-width: 700px) {
